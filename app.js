@@ -1,22 +1,25 @@
 const express = require('express');
-const { logger, validarUsuario } = require('./middleware/index');
+const { logger, validarUsuario } = require('./middleware/index'); // Importa tus middlewares
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); // Permite que la API entienda archivos JSON
 
-// Uso del middleware de logging global
+// USAR MIDDLEWARE DE LOGGING (Punto 5 del proyecto)
 app.use(logger);
 
+// Base de datos temporal en memoria
 let usuarios = [
     { id: 1, nombre: "Ana García", email: "ana@example.com" }
 ];
 
-// GET: Obtener todos los usuarios
+// --- AQUÍ VAN LOS 4 MÉTODOS CRUD ---
+
+// 1. GET: Listar usuarios
 app.get('/usuarios', (req, res) => {
     res.json(usuarios);
 });
 
-// POST: Crear usuario (Incluye VALIDACIÓN adicional)
+// 2. POST: Crear usuario (Usa validación)
 app.post('/usuarios', validarUsuario, (req, res) => {
     const nuevoUsuario = {
         id: usuarios.length + 1,
@@ -27,7 +30,7 @@ app.post('/usuarios', validarUsuario, (req, res) => {
     res.status(201).json(nuevoUsuario);
 });
 
-// PUT: Actualizar usuario
+// 3. PUT: Actualizar usuario
 app.put('/usuarios/:id', validarUsuario, (req, res) => {
     const id = parseInt(req.params.id);
     const index = usuarios.findIndex(u => u.id === id);
@@ -38,14 +41,15 @@ app.put('/usuarios/:id', validarUsuario, (req, res) => {
     res.json(usuarios[index]);
 });
 
-// DELETE: Eliminar usuario
+// 4. DELETE: Eliminar usuario
 app.delete('/usuarios/:id', (req, res) => {
     const id = parseInt(req.params.id);
     usuarios = usuarios.filter(u => u.id !== id);
     res.status(204).send();
 });
 
+// Configuración del puerto
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
