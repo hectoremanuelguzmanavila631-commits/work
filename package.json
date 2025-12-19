@@ -1,12 +1,7 @@
 {
-  "name": "proyecto-api-usuarios",
+  "name": "api-gestion-usuarios",
   "version": "1.0.0",
-  "description": "API CRUD con validaciones y middleware",
   "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js"
-  },
   "dependencies": {
     "express": "^4.18.2"
   }
